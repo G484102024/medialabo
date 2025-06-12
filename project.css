@@ -1,0 +1,35 @@
+h1 {
+	color: white;
+	text-shadow: 2px 2px 4px navy;
+    text-align: center;
+}
+
+h2 {
+    color: #34495e;
+    text-align: center;
+    font-size: small;
+	background-color: #dfdfdf;
+}
+
+ul {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+li {
+    margin-bottom: 10px;
+    list-style-type: none;
+    padding-left: 20px;
+    position: relative;
+}
+
+li:before {
+    content: "•";
+    color: #3498db;
+    position: absolute;
+    left: 0;
+}
