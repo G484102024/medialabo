@@ -2,7 +2,7 @@
     color: white;
     text-shadow: 2px 2px 4px navy;
     text-align: center;
-    border-bottom: 5px solid #c5811a;
+    border-bottom: 5px solid #eccc59f0;
   }
   
   h2 {
@@ -15,7 +15,7 @@
   h3 {
     font-family: cursive;
 	color: #3f3faf;
-	background: linear-gradient(to left,white,#ffefaf);
+	background: linear-gradient(to left,white,#42afd0);
   }
   
   dt {
@@ -40,13 +40,8 @@
   }
   
   a {
-    color: #8e44ad;
+    color: #51b02c;
     text-decoration: none;
     transition: color 0.3s;
   }
-  
-  a:hover {
-    color: #9b59b6;
-    text-decoration: underline;
-  }
-  
+
