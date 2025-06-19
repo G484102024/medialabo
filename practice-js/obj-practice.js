@@ -16,3 +16,14 @@ let gakka = [
 
 //////////////// ここから下にプログラムを書きたそう!
 
+console.log("キャンパスの住所:", campus.address);
+
+console.log("D館の教室名:");
+for (const room of campus.buildingD) {
+  console.log(room);
+}
+
+console.log("日本語の学科名:");
+for (const object of gakka) {
+  console.log(object.name);
+}
