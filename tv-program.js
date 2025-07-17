@@ -21,10 +21,10 @@ function print(data) {
 // 課題5-1 の関数 printDom() はここに記述すること
 function printDom(data) {
   let cha = document.querySelector('#output');
-  cha.innerHTML = '';  // 清空内容
+  cha.innerHTML = ''; 
 
   let ul = document.createElement('ul');
-  cha.insertAdjacentElement('beforeend', ul);  // 拼写修正
+  cha.insertAdjacentElement('beforeend', ul); 
 
   let li1 = document.createElement("li");
   li1.textContent = '開始時間: ' + data.list.g1[0].start_time;
