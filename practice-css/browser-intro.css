@@ -32,3 +32,10 @@ div#zentai > div {
 	background-color: #ffefaf;
 }
 
+img {
+    float: right; 
+    width: 80px;
+    height: 80Spx;
+    margin: 10px 10px 10px 0;
+}
+
