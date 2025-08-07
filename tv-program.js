@@ -1,91 +1,105 @@
 
 // 課題3-2 のプログラムはこの関数の中に記述すること
 function print(data) {
-  console.log("開始時間 " + data.list.g1[0].start_time);
-  console.log("結束時間 " + data.list.g1[0].end_time);
-  console.log("チャンネル " + data.list.g1[0].service.name);
-  console.log("番組名 "+data.list.g1[0].title);
-  console.log("番組サブタイトル " + data.list.g1[0].subtitle);
-  console.log("番組説明文 " + data.list.g1[0].content);
-  console.log("出演者 " + data.list.g1[0].act);
+  let programs = data.list.g1;
 
-  console.log("開始時間 " + data.list.g1[1].start_time);
-  console.log("結束時間 " + data.list.g1[1].end_time);
-  console.log("チャンネル " + data.list.g1[1].service.name);
-  console.log("番組名 "+data.list.g1[1].title);
-  console.log("番組サブタイトル " + data.list.g1[1].subtitle);
-  console.log("番組説明文 " + data.list.g1[1].content);
-  console.log("出演者 " + data.list.g1[1].act);
+  for (let program of programs) {
+    console.log("タイトル:", program.title);
+    console.log("サブタイトル:", program.subtitle);
+    console.log("開始時刻:", program.start_time);
+    console.log("終了時刻:", program.end_time);
+    console.log("サービス名:", program.service.name);
+    console.log("エリア:", program.area.name);
+    console.log("出演者:", program.act || "情報なし");
+    console.log("------");
+  }
 }
 
 // 課題5-1 の関数 printDom() はここに記述すること
+
 function printDom(data) {
-  let cha = document.querySelector('#output');
-  cha.innerHTML = ''; 
+  let oldDiv = document.getElementById('result');
+  if (oldDiv) {
+    oldDiv.remove();
+  }
 
-  let ul = document.createElement('ul');
-  cha.insertAdjacentElement('beforeend', ul); 
+  let div = document.createElement('div');
+  div.id = 'result';
+  document.body.insertAdjacentElement('beforeend',div);
 
-  let li1 = document.createElement("li");
-  li1.textContent = '開始時間: ' + data.list.g1[0].start_time;
-  ul.insertAdjacentElement('beforeend', li1);
+  if (!data.list || (data.list && Object.keys(data.list).length === 0)) {
+  div.textContent = '該当する番組が見つかりません';
+  return;
+}
 
-  let li2 = document.createElement("li");
-  li2.textContent = '結束時間: ' + data.list.g1[0].end_time;
-  ul.insertAdjacentElement('beforeend', li2);
+  const keys = Object.keys(data.list);
+  const programs = data.list[keys[0]];
 
-  let li3 = document.createElement("li");
-  li3.textContent = 'チャンネル: ' + data.list.g1[0].service.name;
-  ul.insertAdjacentElement('beforeend', li3);
+  for (let program of programs) {
+    let item = document.createElement('div');
+    item.style.marginBottom = '1em';
 
-  let li4 = document.createElement("li");
-  li4.textContent = '番組名: ' + data.list.g1[0].title;
-  ul.insertAdjacentElement('beforeend', li4);
+    let title = document.createElement('p');
+    title.textContent = 'タイトル: ' + program.title;
+    item.insertAdjacentElement('beforeend',title);
 
-  let li5 = document.createElement("li");
-  li5.textContent = '番組サブタイトル: ' + data.list.g1[0].subtitle;
-  ul.insertAdjacentElement('beforeend', li5);
+    let subtitle = document.createElement('p');
+    subtitle.textContent = 'サブタイトル: ' + program.subtitle;
+    item.insertAdjacentElement('beforeend',subtitle);
 
-  let li6 = document.createElement("li");
-  li6.textContent = '番組説明文: ' + data.list.g1[0].content;
-  ul.insertAdjacentElement('beforeend', li6);
+    let start = document.createElement('p');
+    start.textContent = '開始時刻: ' + program.start_time;
+    item.insertAdjacentElement('beforeend',start);
 
-  let li7 = document.createElement("li");
-  li7.textContent = '出演者: ' + data.list.g1[0].act;
-  ul.insertAdjacentElement('beforeend', li7);
+    let end = document.createElement('p');
+    end.textContent = '終了時刻: ' + program.end_time;
+    item.insertAdjacentElement('beforeend',end);
+
+    let service = document.createElement('p');
+    service.textContent = 'サービス名: ' + program.service.name;
+    item.insertAdjacentElement('beforeend',service);
+
+    let area = document.createElement('p');
+    area.textContent = 'エリア: ' + program.area.name;
+    item.insertAdjacentElement('beforeend',area);
+
+    let act = document.createElement('p');
+    act.textContent = '出演者: ' + (program.act || '情報なし');
+    item.insertAdjacentElement('beforeend',act);
+
+    let line = document.createElement('hr');
+    item.insertAdjacentElement('beforeend',line);
+
+    div.insertAdjacentElement('beforeend',item);
+  }
 }
 
 // 課題6-1 のイベントハンドラ登録処理は以下に記述
-document.querySelector('#anniu').addEventListener('click', sendRequest);
+document.getElementById("tv-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    sendRequest();
+});    
 
 // 課題6-1 のイベントハンドラ sendRequest() の定義
 function sendRequest() {
-  let selected = document.querySelector('#xuan').value;
-  let url = '';
+    const service = document.getElementById("service").value;
+    const genre = document.getElementById("genre").value;
 
-  if (selected === 'first' || selected === 'second') {
-    url = 'https://www.nishita-lab.org/web-contents/jsons/nhk/g1-0000-j.json';
-  } else {
-    alert('検索結果を選択してください。');
-    return;
-  }
+    const url = `https://www.nishita-lab.org/web-contents/jsons/nhk/${service}-${genre}-j.json`;
 
-  axios.get(url)
-    .then(showResult)
-    .catch(showError)
-    .then(finish);
+    axios.get(url)
+        .then(showResult)   
+        .catch(showError)   
+        .then(finish);      
 }
 
 // 課題6-1: 通信が成功した時の処理は以下に記述
 function showResult(resp) {
-  let data = resp.data;
-  let realData = (typeof data === 'string') ? JSON.parse(data) : data;
-  let selected = document.querySelector('#xuan').value;
-  if (selected === 'first') {
-    printDom({ list: { g1: [realData.list.g1[0]] } });
-  } else if (selected === 'second') {
-    printDom({ list: { g1: [realData.list.g1[1]] } });
+    const data = resp.data;
+    if (typeof data === 'string') {
+    data = JSON.parse(data);
   }
+    printDom(data);
 }
 
 // 課題6-1: 通信エラーが発生した時の処理
